@@ -35,10 +35,16 @@ export const PostsSlice = createSlice({
       state.posts = [...state.posts, action.payload];
     },
     EditPostAction: (state, action) => {
-      state.posts = [action.payload]; //هذا خطا بس علشان نشوف عملية الابديت
+      // بيعمل ايديت للبوست بس علشان شغالين ع سيرفر فيك ما بيظهر عملية الابديت لمن اعمل رجوع لانه بيعمل تحديث للصفحة بس في الردكس عمل ابديت
+      state.posts.map((post) =>
+        post.id === action.payload.id ? action.payload : post
+      );
     },
     FiltringPostAction: (state, action) => {
       state.filterPost = action.payload;
+    },
+    DeleteFromServerAction: (state) => {
+      state.posts = [...state.posts];
     },
   },
 });
@@ -52,6 +58,7 @@ export const {
   CreatePostAction,
   EditPostAction,
   FiltringPostAction,
+  DeleteFromServerAction,
 } = PostsSlice.actions;
 export const getAllPost = () => async (dispatch) => {
   try {
@@ -89,6 +96,7 @@ export const getComment = (id) => async (dispatch) => {
     dispatch(setError(error.message));
   }
 };
+//عرف المتغيرات داخل كلاس
 export const CreatePostMethod =
   ({ id, title, body }) =>
   async (dispatch) => {
@@ -123,6 +131,18 @@ export const FiltringPost = (id) => async (dispatch) => {
     );
     if (data) {
       dispatch(FiltringPostAction(data));
+    }
+  } catch (error) {
+    dispatch(setError(error.message));
+  }
+};
+export const DeleteFromServer = (id) => async (dispatch) => {
+  try {
+    const { data } = await axios.delete(
+      `https://jsonplaceholder.typicode.com/posts/${id}`
+    );
+    if (data) {
+      dispatch(DeleteFromServerAction());
     }
   } catch (error) {
     dispatch(setError(error.message));

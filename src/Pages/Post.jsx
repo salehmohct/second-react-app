@@ -6,6 +6,7 @@ import {
   DeletePost,
   getComment,
   getId,
+  DeleteFromServer,
 } from "../Redux/posts";
 import { Link } from "react-router-dom";
 
@@ -37,6 +38,9 @@ const Post = () => {
           </Link>
           <button onClick={() => dispatch(DeletePost(post.id))}>
             Delete Post
+          </button>
+          <button onClick={() => dispatch(DeleteFromServer(post.id))}>
+            Delete From Server
           </button>
           <Link to="FiltreingPost" onClick={() => dispatch(getId(post.id))}>
             Filtring Post

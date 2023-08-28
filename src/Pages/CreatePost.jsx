@@ -49,6 +49,7 @@ const CreatePost = () => {
           type="submit"
           onClick={() => dispatch(CreatePostMethod({ id, title, body }))}
         >
+          {/* الاي دي لا نقوم بتمريره لانه يتم توليده في الباك اند */}
           Create
         </Link>
       </form>
